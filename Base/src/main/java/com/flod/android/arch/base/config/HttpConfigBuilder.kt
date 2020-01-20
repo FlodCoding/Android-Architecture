@@ -9,5 +9,5 @@ import android.app.Application
  * UseDes:
  */
 interface HttpConfigBuilder {
-    fun applyConfig(context: Application, settings: HttpSettings)
+    fun build(context: Application, settings: HttpSettings)
 }

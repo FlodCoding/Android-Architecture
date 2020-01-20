@@ -20,11 +20,11 @@ import javax.inject.Singleton
  * UseDes:
  */
 @Module
-class HttpModule {
+internal class HttpModule {
 
     @Singleton
     @Provides
-    internal fun provideGson(httpSettings: HttpSettings): Gson {
+     fun provideGson(httpSettings: HttpSettings): Gson {
         val gsonBuilder = GsonBuilder()
         httpSettings.gsonConfig?.invoke(gsonBuilder)
         return gsonBuilder.create()
@@ -33,7 +33,7 @@ class HttpModule {
 
     @Singleton
     @Provides
-    internal fun provideOkHttpClient(httpSettings: HttpSettings): OkHttpClient {
+    fun provideOkHttpClient(httpSettings: HttpSettings): OkHttpClient {
         val builder = OkHttpClient.Builder()
         httpSettings.okHttpConfig?.invoke(builder)
 
@@ -49,7 +49,7 @@ class HttpModule {
 
     @Singleton
     @Provides
-    internal fun provideRetrofit(
+    fun provideRetrofit(
         httpSettings: HttpSettings,
         okHttpClient: OkHttpClient,
         gson: Gson

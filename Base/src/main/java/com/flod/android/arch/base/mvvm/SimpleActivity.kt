@@ -23,9 +23,9 @@ abstract class SimpleActivity : AppCompatActivity() {
             setContentViewId(contentViewId)
             super.onCreate(savedInstanceState)
             initView(savedInstanceState)
-            initViewAfter(savedInstanceState)
             initData(savedInstanceState)
         } else {
+            super.onCreate(savedInstanceState)
             finish()
         }
 
@@ -42,16 +42,19 @@ abstract class SimpleActivity : AppCompatActivity() {
 
     protected abstract fun initView(savedInstanceState: Bundle?)
 
-    protected open fun initViewAfter(savedInstanceState: Bundle?) {
-    }
 
     protected open fun initData(savedInstanceState: Bundle?) {
 
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        SoftInputUtil.touchOutsideHideSoftInput(this, event)
+        if (touchOutsideHideSoftInput())
+            SoftInputUtil.touchOutsideHideSoftInput(this, event)
         return super.dispatchTouchEvent(event)
+    }
+
+    protected open fun touchOutsideHideSoftInput(): Boolean {
+        return false
     }
 
 

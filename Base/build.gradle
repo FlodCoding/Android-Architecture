@@ -40,7 +40,7 @@ dependencies {
     api rootProject.ext.dependencies["appcompat"]
     api rootProject.ext.dependencies["constraintlayout"]
     api rootProject.ext.dependencies["material"]
-    //api "androidx.lifecycle:lifecycle-extensions:2.2.0-alpha05"
+    api "androidx.lifecycle:lifecycle-extensions:2.2.0-rc03"
 
     //net
     api rootProject.ext.dependencies["gson"]

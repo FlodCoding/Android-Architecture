@@ -18,13 +18,13 @@ import javax.inject.Singleton
  *
  */
 @Module(includes = [AndroidInjectionModule::class,  HttpModule::class])
-class BaseModule {
+internal class BaseModule {
 
     @Singleton
     @Provides
     fun provideHttpSettings(application: Application, httpConfigBuilder: HttpConfigBuilder): HttpSettings {
         val httpSettings = HttpSettings()
-        httpConfigBuilder.applyConfig(application, httpSettings)
+        httpConfigBuilder.build(application, httpSettings)
         return httpSettings
     }
 

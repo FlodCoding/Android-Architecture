@@ -9,5 +9,5 @@ package com.flod.android.arch.base.config
  */
 interface LifecycleInjector {
 
-    fun providerLifecycleBuilders(): List<LifecycleBuilder>?
+    fun provideLifecycleBuilders(): List<LifecycleBuilder>?
 }

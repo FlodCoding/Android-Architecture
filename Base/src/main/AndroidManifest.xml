@@ -1,2 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.flod.android.arch.base" />
+    package="com.flod.android.arch.base">
+
+    <application>
+        <provider
+            android:name=".lifecycle.AppLifecycleRegister"
+            android:authorities="com.flod.android.arch.base.lifecycle.AppLifecycleRegister"
+            android:exported="false"
+            android:initOrder="1000" />
+
+    </application>
+
+</manifest>
