@@ -1,4 +1,4 @@
-package com.flod.android.arch.base.mvvm
+package com.flod.android.arch.base.view
 
 import android.os.Bundle
 import android.view.MotionEvent
@@ -23,6 +23,7 @@ abstract class SimpleActivity : AppCompatActivity() {
             setContentViewId(contentViewId)
             super.onCreate(savedInstanceState)
             initView(savedInstanceState)
+            initViewAfter(savedInstanceState)
             initData(savedInstanceState)
         } else {
             super.onCreate(savedInstanceState)
@@ -41,6 +42,9 @@ abstract class SimpleActivity : AppCompatActivity() {
     }
 
     protected abstract fun initView(savedInstanceState: Bundle?)
+
+    protected open fun initViewAfter(savedInstanceState: Bundle?) {
+    }
 
 
     protected open fun initData(savedInstanceState: Bundle?) {

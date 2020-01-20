@@ -1,2 +1,2 @@
-include ':app', ':Base'
+include ':App', ':Base'
 rootProject.name='Android-Architecture-Samples'
