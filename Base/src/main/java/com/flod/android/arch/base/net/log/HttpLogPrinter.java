@@ -8,7 +8,7 @@ import okhttp3.Response;
 /**
  * SimpleDes:
  * Creator: Flood
- * Date: 2020-01-06
+ * Date: 2019-03-06
  * UseDes:
  */
 public interface HttpLogPrinter {

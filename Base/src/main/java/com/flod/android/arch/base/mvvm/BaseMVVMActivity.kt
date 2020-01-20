@@ -26,15 +26,10 @@ abstract class BaseMVVMActivity<VDB : ViewDataBinding, VM : ViewModel> : SimpleA
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
-        initViewModel()
-        initDataBinding()
         super.onCreate(savedInstanceState)
+        initViewModel()
     }
 
-    @CallSuper
-    protected open fun initDataBinding() {
-        mBinding = DataBindingUtil.setContentView(this, contentViewId)
-    }
 
     @CallSuper
     protected open fun initViewModel() {
@@ -43,7 +38,7 @@ abstract class BaseMVVMActivity<VDB : ViewDataBinding, VM : ViewModel> : SimpleA
 
 
     override fun setContentViewId(layoutResID: Int) {
-        // not execute setContentView(layoutResID)
+        mBinding = DataBindingUtil.setContentView(this, contentViewId)
     }
 
 
