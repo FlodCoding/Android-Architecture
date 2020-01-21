@@ -3,7 +3,7 @@
 package com.flod.android.arch.base.di
 
 import com.flod.android.arch.base.config.HttpSettings
-import com.flod.android.arch.base.net.HttpRequestInterceptor
+import com.flod.android.arch.base.net.internal.OkHttpInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -38,8 +38,8 @@ internal class HttpModule {
         httpSettings.okHttpConfig?.invoke(builder)
 
         builder.addInterceptor(
-            HttpRequestInterceptor(
-                httpSettings.logLevel, httpSettings.interceptHandler, httpSettings.httpLogPrinter
+            OkHttpInterceptor(
+                httpSettings.httpLogLevel, httpSettings.httpInterceptor, httpSettings.httpLogPrinter
             )
         )
         builder.build()

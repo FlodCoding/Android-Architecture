@@ -1,4 +1,6 @@
-package com.flod.android.arch.base.net.log
+@file:Suppress("MemberVisibilityCanBePrivate")
+
+package com.flod.android.arch.base.net.internal
 
 import android.text.TextUtils
 import org.json.JSONArray

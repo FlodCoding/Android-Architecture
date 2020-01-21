@@ -1,7 +1,7 @@
-package com.flod.android.arch.base.net
+package com.flod.android.arch.base.net.internal
 
-import com.flod.android.arch.base.net.log.DefaultHttpLogPrinter
-import com.flod.android.arch.base.net.log.HttpLogPrinter
+import com.flod.android.arch.base.net.HttpInterceptor
+import com.flod.android.arch.base.net.HttpLogPrinter
 import okhttp3.Interceptor
 import okhttp3.MediaType
 import okhttp3.Request
@@ -19,13 +19,14 @@ import java.util.concurrent.TimeUnit
  * Date: 2019-03-05
  * UseDes:
  */
-class HttpRequestInterceptor @JvmOverloads constructor(var printLevel: Level? = Level.NONE,
-                                                       var interceptHandler: InterceptHandler?,
-                                                       var httpLogPrinter: HttpLogPrinter? = DefaultHttpLogPrinter()
+internal class OkHttpInterceptor @JvmOverloads constructor(
+    var httpLogLevel: HttpLogLevel? = HttpLogLevel.NONE,
+    var httpInterceptor: HttpInterceptor?,
+    var httpLogPrinter: HttpLogPrinter? = DefaultHttpLogPrinter()
 ) : Interceptor {
 
     init {
-        printLevel = printLevel ?: Level.NONE
+        httpLogLevel = httpLogLevel ?: HttpLogLevel.NONE
         httpLogPrinter = httpLogPrinter ?: DefaultHttpLogPrinter()
     }
 
@@ -35,10 +36,10 @@ class HttpRequestInterceptor @JvmOverloads constructor(var printLevel: Level? = 
         //从Chain拿到Request
         var request = chain.request()
 
-        val logReq = printLevel == Level.ALL || printLevel == Level.REQUEST
-        val logRsp = printLevel == Level.ALL || printLevel == Level.RESPONSE
+        val logReq = httpLogLevel == HttpLogLevel.ALL || httpLogLevel == HttpLogLevel.REQUEST
+        val logRsp = httpLogLevel == HttpLogLevel.ALL || httpLogLevel == HttpLogLevel.RESPONSE
 
-        request = interceptHandler?.interceptRequest(chain, request) ?: request
+        request = httpInterceptor?.onInterceptRequest(chain, request) ?: request
 
         val printer = httpLogPrinter!!
         if (logReq) {
@@ -60,9 +61,8 @@ class HttpRequestInterceptor @JvmOverloads constructor(var printLevel: Level? = 
             printer.printResponse(chainMs, originalResponse, rspBodyStr)
         }
 
-
-        return interceptHandler?.interceptResponse(rspBodyStr, chain, originalResponse)
-                ?: originalResponse
+        return httpInterceptor?.onInterceptResponse(rspBodyStr, chain, originalResponse)
+            ?: originalResponse
     }
 
     private fun requestBodyToStr(request: Request): String? {
@@ -127,7 +127,10 @@ class HttpRequestInterceptor @JvmOverloads constructor(var printLevel: Level? = 
         var subtype = mediaType.subtype
 
         subtype = subtype.toLowerCase(Locale.getDefault())
-        return (subtype.contains("x-www-form-urlencoded") || subtype.contains("json") || subtype.contains("xml") || subtype.contains("html")
+        return (subtype.contains("x-www-form-urlencoded")
+                || subtype.contains("json")
+                || subtype.contains("xml")
+                || subtype.contains("html")
                 || subtype.contains("x-javascript") || subtype.contains("plain"))
 
 
@@ -135,13 +138,6 @@ class HttpRequestInterceptor @JvmOverloads constructor(var printLevel: Level? = 
 
     private fun getCharset(contentType: MediaType?): Charset? {
         return if (contentType != null) contentType.charset(Charsets.UTF_8) else Charsets.UTF_8
-    }
-
-    enum class Level {
-        NONE,     //不打印
-        REQUEST,  //只打印请求信息
-        RESPONSE, //只打印响应信息
-        ALL       //打印全部
     }
 
 }

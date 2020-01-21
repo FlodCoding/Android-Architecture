@@ -1,4 +1,4 @@
-package com.flod.android.arch.base.net.log
+package com.flod.android.arch.base.net
 
 import okhttp3.Request
 import okhttp3.Response

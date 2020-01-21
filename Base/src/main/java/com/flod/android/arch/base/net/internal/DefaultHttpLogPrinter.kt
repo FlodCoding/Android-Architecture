@@ -1,10 +1,10 @@
 @file:Suppress("unused")
 
-package com.flod.android.arch.base.net.log
+package com.flod.android.arch.base.net.internal
 
 import android.text.TextUtils
 import android.util.Log
-import com.flod.android.arch.base.utils.JsonFormatUtil
+import com.flod.android.arch.base.net.HttpLogPrinter
 import okhttp3.Request
 import okhttp3.Response
 import java.util.concurrent.Executors
@@ -16,7 +16,7 @@ import java.util.concurrent.Executors
  * UseDes:
  */
 
-class DefaultHttpLogPrinter : HttpLogPrinter {
+internal class DefaultHttpLogPrinter : HttpLogPrinter {
     override fun printRequest(request: Request, bodyString: String?) {
         logRequest(request, bodyString)
     }
@@ -57,32 +57,36 @@ class DefaultHttpLogPrinter : HttpLogPrinter {
     private fun logRequest(request: Request, bodyString: String?) {
 
         val tag = "$TAG-Request"
-        logMulti(tag, BOUND_REQUEST_TOP,
+        logMulti(tag,
+            BOUND_REQUEST_TOP,
                 MARK_URL + request.url,
                 MARK_METHOD + request.method,
-                N,
-                MARK_HEADERS,
+            N,
+            MARK_HEADERS,
                 formatHeaders(request.headers.toString()),
-                N,
-                MARK_BODY,
+            N,
+            MARK_BODY,
                 formatBody(bodyString)!!,
-                BOUND_BOTTOM
+            BOUND_BOTTOM
         )
     }
 
     private fun logResponse(chainMs: Long, response: Response, bodyString: String?) {
         val tag = "$TAG-Response"
-        logMulti(tag, BOUND_RESPONSE_TOP,
+        logMulti(tag,
+            BOUND_RESPONSE_TOP,
                 MARK_URL + response.request.url,
                 MARK_METHOD + response.request.method,
                 MARK_STATUS_CODE + response.code + " / " + response.message,
-                MARK_TIME + chainMs + "ms", N,
-                MARK_HEADERS,
+                MARK_TIME + chainMs + "ms",
+            N,
+            MARK_HEADERS,
                 formatHeaders(response.headers.toString()),
-                N,
-                MARK_BODY,
+            N,
+            MARK_BODY,
                 formatBody(bodyString)!!,
-                BOUND_BOTTOM)
+            BOUND_BOTTOM
+        )
     }
 
 
@@ -152,12 +156,14 @@ class DefaultHttpLogPrinter : HttpLogPrinter {
     private fun formatBody(bodyString: String?): String? {
         if (TextUtils.isEmpty(bodyString)) return "Omitted Body"
         return if (formatBody) {
-            JsonFormatUtil.jsonFormat(if (removeBackslash)
-                bodyString!!.replace("\"[", "[")
+            JsonFormatUtil.jsonFormat(
+                if (removeBackslash)
+                    bodyString!!.replace("\"[", "[")
                         .replace("]\"", "]")
                         .replace("\"{", "{")
                         .replace("}\"", "}")
-                        .replace("\\\"", "\"") else bodyString!!)
+                        .replace("\\\"", "\"") else bodyString!!
+            )
         } else bodyString
     }
 
