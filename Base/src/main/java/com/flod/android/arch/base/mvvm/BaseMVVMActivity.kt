@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.flod.android.arch.base.view.SimpleActivity
 import dagger.android.AndroidInjection
 import javax.inject.Inject
 

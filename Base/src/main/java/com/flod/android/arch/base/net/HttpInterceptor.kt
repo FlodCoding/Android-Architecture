@@ -17,9 +17,12 @@ interface HttpInterceptor {
     fun onInterceptRequest(chain: Interceptor.Chain, request: Request): Request
 
     /**
-     * 在HTTP响应后拦截，可预先对Response进行处理，
+     * 在HTTP响应后拦截，可预先对Response进行处理
      *
-     * @param responseBodyStr 以[HttpInterceptor]或[HttpLogLevel]为前提，才会有数据
+     * @param responseBodyStr 以
+     * [com.flod.android.arch.base.net.internal.HttpLogLevel.RESPONSE]或
+     * [com.flod.android.arch.base.net.internal.HttpLogLevel.ALL]
+     * 为前提，才会有数据
      */
     fun onInterceptResponse(responseBodyStr: String?, chain: Interceptor.Chain, response: Response): Response
 }

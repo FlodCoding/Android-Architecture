@@ -21,8 +21,8 @@ import java.util.*
  *
  *
  * 必要时请调用(当屏幕旋转，或资源回收时)
- * [.onSaveInstanceState]
- * [.onRestoreInstanceState]
+ * [onSaveInstanceState]
+ * [onRestoreInstanceState]
  * 这两个方法，用来恢复当前选择的fragment
  */
 @MainThread

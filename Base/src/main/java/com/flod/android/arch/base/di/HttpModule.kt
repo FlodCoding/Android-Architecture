@@ -49,11 +49,7 @@ internal class HttpModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(
-        httpSettings: HttpSettings,
-        okHttpClient: OkHttpClient,
-        gson: Gson
-    ): Retrofit {
+    fun provideRetrofit(httpSettings: HttpSettings, okHttpClient: OkHttpClient, gson: Gson): Retrofit {
         val builder = Retrofit.Builder()
         builder.addConverterFactory(GsonConverterFactory.create(gson))
         httpSettings.retrofitConfig?.invoke(builder)

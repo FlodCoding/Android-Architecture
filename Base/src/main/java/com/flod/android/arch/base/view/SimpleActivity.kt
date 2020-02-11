@@ -1,4 +1,4 @@
-package com.flod.android.arch.base.mvvm
+package com.flod.android.arch.base.view
 
 import android.os.Bundle
 import android.view.MotionEvent
