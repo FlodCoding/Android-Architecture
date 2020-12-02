@@ -1,0 +1,78 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
+    defaultConfig {
+
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode rootProject.versionCode
+        versionName rootProject.versionName
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    dataBinding.enabled true
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    //kotlin
+    api("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+    api("androidx.core:core-ktx:$ktxVersion")
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+
+    //UI
+    api("androidx.appcompat:appcompat:$appCompatVersion")
+    api("androidx.constraintlayout:constraintlayout:$constraintLayoutVersion")
+    api("com.google.android.material:material:$materialVersion")
+    api("androidx.fragment:fragment-ktx:$fragmentVersion")
+
+    //Navigation
+    api("androidx.navigation:navigation-fragment-ktx:$navigationVersion")
+    api("androidx.navigation:navigation-ui-ktx:$navigationVersion")
+
+    //Lifecycle
+    api("androidx.lifecycle:lifecycle-extensions:$lifecycleVersion")
+    api("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
+    api("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
+
+    //NetWork
+    api("com.google.code.gson:gson:$gsonVersion")
+    api("com.squareup.okhttp3:okhttp:$okhttpVersion")
+    api("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    api("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+    api("com.github.bumptech.glide:glide:$glideVersion")
+    api("com.github.bumptech.glide:okhttp3-integration:$glideVersion")
+
+    //DI
+    api("com.google.dagger:dagger:$daggerVersion")
+    api("com.google.dagger:hilt-android:$hiltVersion")
+    kapt("com.google.dagger:dagger-compiler:$daggerVersion")
+    kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
+}
