@@ -2,11 +2,14 @@
 
 package com.flod.android.arch.base.lifecycle
 
+import android.app.Activity
 import android.app.Application
 import android.content.ContentProvider
 import android.content.ContentValues
 import android.database.Cursor
 import android.net.Uri
+import android.os.Bundle
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -14,7 +17,6 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.flod.android.arch.base.config.LifecycleBuilder
 import com.flod.android.arch.base.config.LifecycleInjector
-import com.flod.android.arch.base.lifecycle.base.BaseActivityLifecycleCallbacks
 import java.util.*
 
 /**
@@ -24,7 +26,14 @@ import java.util.*
  * UseDes:
  *
  */
+val application: Application
+    get() = AppLifecycleRegister.application
+
 internal class AppLifecycleRegister : ContentProvider(), LifecycleObserver {
+    companion object {
+        lateinit var application: Application
+    }
+
     override fun onCreate(): Boolean {
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         return true
@@ -33,14 +42,13 @@ internal class AppLifecycleRegister : ContentProvider(), LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onApplicationCreate() {
-        val application = context?.applicationContext
-        if (application is Application
-            && application is LifecycleInjector
-        ) {
-            attachLifecycle(application, application.provideLifecycleBuilders())
+        val context = context as Application
+        application = context
+        if (context is LifecycleInjector) {
+
+            attachLifecycle(context, context.provideLifecycleBuilders())
         }
     }
-
 
     private fun attachLifecycle(application: Application, list: List<LifecycleBuilder>?) {
         list ?: return
@@ -60,17 +68,32 @@ internal class AppLifecycleRegister : ContentProvider(), LifecycleObserver {
         }
 
         //Add baseActivityLifecycleCallback
-        application.registerActivityLifecycleCallbacks(
-            BaseActivityLifecycleCallbacks(
-                fragmentLifeCallbacks
-            )
-        )
+        application.registerActivityLifecycleCallbacks(BaseActivityLifecycleCallbacks(fragmentLifeCallbacks))
 
         //add others
         activityLifeCallbacks.forEach {
             application.registerActivityLifecycleCallbacks(it)
         }
 
+
+    }
+
+
+    class BaseActivityLifecycleCallbacks(private val fragmentLifecycleCallbacks: List<FragmentManager.FragmentLifecycleCallbacks>) :
+        EmptyActivityLifecycleCallbacks() {
+        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+            registerFragmentLifecycle(activity)
+        }
+
+        private fun registerFragmentLifecycle(activity: Activity) {
+            if (activity is FragmentActivity) {
+                for (callback in fragmentLifecycleCallbacks) {
+                    activity.supportFragmentManager
+                        .registerFragmentLifecycleCallbacks(callback, true)
+                }
+            }
+
+        }
 
     }
 
@@ -107,5 +130,7 @@ internal class AppLifecycleRegister : ContentProvider(), LifecycleObserver {
     override fun getType(uri: Uri): String? {
         return null
     }
+
+
 
 }

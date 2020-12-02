@@ -5,9 +5,9 @@ import android.app.Application
 /**
  * SimpleDes:
  * Creator: Flood
- * Date: 2020-01-08
+ * Date: 2020-08-06
  * UseDes:
  */
 interface HttpConfigBuilder {
-    fun build(context: Application, settings: HttpSettings)
+    fun applyConfig(context: Application, settings: HttpSettings)
 }
